@@ -1,0 +1,122 @@
+// Приклад 1: Виправлення помилки без додавання нових рядків
+fn main() {
+    let s: &str = "hello, world";  // Ось тут потрібно використовувати &str, а не str
+
+    println!("Success!");
+}
+
+// Приклад 2: Виправлення помилки з двома варіантами
+fn main() {
+    let s: Box<str> = "hello, world".into();
+    greetings(&s);  // Заміна на посилання &s
+
+    greetings(&s);  // Альтернативно, можна передати с у вигляді &str
+}
+
+fn greetings(s: &str) {
+    println!("{}", s)
+}
+
+// Приклад 3: Заповнення порожнього місця
+fn main() {
+    let mut s = String::from("");  // Початкове значення
+    s.push_str("hello, world");
+    s.push('!');
+
+    assert_eq!(s, "hello, world!");
+
+    println!("Success!");
+}
+
+// Приклад 4: Виправлення помилки без додавання нового рядка
+fn main() {
+    let mut s = String::from("hello");
+    s.push(',');
+    s.push_str(" world");  // Використовуємо push_str замість push для рядків
+    s += "!"; // Заміна += на злиття рядків за допомогою String
+
+    println!("{}", s);
+}
+
+// Приклад 5: Заповнення порожнього місця
+fn main() {
+    let s = String::from("I like dogs");
+    // Виділяємо нову пам'ять і зберігаємо змінений рядок
+    let s1 = s.replace("dogs", "cats");
+
+    assert_eq!(s1, "I like cats");
+
+    println!("Success!");
+}
+
+// Приклад 6: Виправлення помилок без видалення рядків
+fn main() {
+    let s1 = String::from("hello,");
+    let s2 = String::from("world!");
+    let s3 = s1 + &s2;  // Використовуємо посилання на s2
+    assert_eq!(s3, "hello,world!");
+    // Не можна друкувати s1 після того, як воно було переміщено
+    println!("{}", s2);
+}
+
+// Приклад 7: Виправлення помилки з двома рішеннями
+fn main() {
+    let s = String::from("hello, world");
+    greetings(s); // Передаємо s як значення
+
+    // Альтернативно, можна передати посилання на s:
+    // greetings(&s); // Якщо потрібно залишити s
+}
+
+fn greetings(s: String) {
+    println!("{}", s)
+}
+
+// Приклад 8: Використання двох підходів для виправлення помилки без додавання нового рядка
+fn main() {
+    let s = "hello, world".to_string();  // Перетворюємо на String
+    let s1: &str = &s;  // Отримуємо посилання на s
+
+    println!("Success!");
+}
+
+// Приклад 9: Використання escape для виведення байтів за їх шістнадцятковими значеннями
+fn main() {
+    let byte_escape = "I'm writing Ru\x73__!";  // Використовуємо escape символи
+    println!("What are you doing\x3F (\\x3F means ?) {}", byte_escape);
+
+    // Або Юнікодні кодові точки:
+    let unicode_codepoint = "\u{211D}";
+    let character_name = "\"DOUBLE-STRUCK CAPITAL R\"";
+
+    println!("Unicode character {} (U+211D) is called {}",
+                unicode_codepoint, character_name );
+
+    let long_string = "String literals\n\
+                        can span multiple lines.\n\
+                        The linebreak and indentation here \
+                         can be escaped too!";
+    println!("{}", long_string);
+}
+
+// Приклад 10: Виправлення сирого рядка з escapes
+fn main() {
+    let raw_str = r"Escapes don't work here: \x3F \u{211D}";
+    // Модифікація рядка для використання escape символів
+    assert_eq!(raw_str, "Escapes don't work here: ? ℝ");
+
+    // Якщо потрібно використовувати лапки в сирому рядку, додаємо пару #:
+    let quotes = r#"And then I said: "There is no escape!""#;
+    println!("{}", quotes);
+
+    // Якщо потрібно вставити "# в рядок, просто використовуйте більше # в розмежуванні.
+    // Можна використовувати до 65535 #.
+    let delimiter = r###"A string with "# in it. And even "##!"###;
+    println!("{}", delimiter);
+
+    // Заповнення порожнього місця
+    let long_delimiter = r#"Hello, "\"##\"""#;  // Використовуємо правильний рядок
+    assert_eq!(long_delimiter, "Hello, \"##\"");
+
+    println!("Success!");
+}
