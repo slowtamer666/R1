@@ -1,0 +1,78 @@
+// Приклад 1: Вирішення проблеми з переміщенням (move)
+fn main() {
+    // Використання посилання, щоб уникнути переміщення
+    let x = String::from("Hello world");
+    let y = &x;
+    println!("{}, {}", x, y);
+}
+
+// Інший спосіб: клонування значення
+fn main() {
+    let x = String::from("Hello world");
+    let y = x.clone();
+    println!("{}, {}", x, y);
+}
+
+// Приклад 2: Зміна функції take_ownership для повернення значення
+fn main() {
+    let s1 = String::from("Hello world");
+    let s2 = take_ownership(s1);
+
+    println!("{}", s2);
+}
+
+// Функція тепер повертає значення, щоб передати його назад
+fn take_ownership(s: String) -> String {
+    println!("{}", s);
+    s
+}
+
+// Приклад 3: Повернення власності з функції give_ownership
+fn main() {
+    let s = give_ownership();
+    println!("{}", s);
+}
+
+// Видаляємо _s, оскільки .into_bytes() змінює тип, і повертаємо оригінальне значення
+fn give_ownership() -> String {
+    let s = String::from("Hello world");
+    s
+}
+
+// Приклад 4: Використання Copy замість Clone
+fn main() {
+    let x = (1, 2, (), "hello".to_string());
+    let y = x; // `Copy` тільки для значень, які не містять `String`
+    println!("{:?}, {:?}", x, y);
+}
+
+// Альтернативний спосіб: Використання &str замість String, щоб Copy працював
+fn main() {
+    let x = (1, 2, (), "hello");
+    let y = x;
+    println!("{:?}, {:?}", x, y);
+}
+
+// Приклад 5: Оголошення змінної s1 як змінної з можливістю зміни
+fn main() {
+    let mut s = String::from("Hello ");
+    
+    let mut s1 = s; // `s1` оголошено як `mut` для додавання рядка
+
+    s1.push_str("World!");
+
+    println!("Success!");
+}
+
+// Приклад 6: Використання Box і вказівників
+fn main() {
+    let x = Box::new(5);
+    
+    let mut y = Box::new(*x); // Створюємо новий `Box` зі значенням `x`, щоб `y` був змінним
+    
+    *y = 4; // Змінюємо `y`, не змінюючи `x`
+    
+    assert_eq!(*x, 5); // `x` залишається незмінним
+
+    println!("Success!");
+}
