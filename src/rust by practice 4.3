@@ -1,0 +1,32 @@
+fn main() {
+    let v = {
+        let mut x = 1;
+        x += 2;
+        x // Повертаємо `x`, щоб `v` було 3
+    };
+
+    assert_eq!(v, 3);
+
+    println!("Success!");
+}
+
+
+fn main() {
+    let mut x = 1;
+    x += 2;
+    let v = x;
+
+    assert_eq!(v, 3);
+
+    println!("Success!");
+}
+
+
+fn main() {
+    let x = 3;
+    let v = x; // Присвоюємо значення змінної `x` змінній `v`
+
+    assert!(v == 3);
+
+    println!("Success!");
+}
