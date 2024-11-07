@@ -1,0 +1,71 @@
+fn main() {
+    let x: i32 = 5; // Ініціалізовано значенням 5
+    let y: i32; // Ініціалізація `y` не потрібна, тому що вона не використовується
+
+    assert_eq!(x, 5);
+    println!("Success!");
+}
+
+
+fn main() {
+    let mut x = 1; // Змінна `mut` дозволяє змінювати значення
+    x += 2; 
+    
+    assert_eq!(x, 3);
+    println!("Success!");
+}
+
+
+fn main() {
+    let x: i32 = 10;
+    {
+        let y: i32 = 5;
+        println!("The value of x is {} and value of y is {}", x, y);
+    }
+    // println!("The value of x is {} and value of y is {}", x, y); // y не доступна поза блоком
+}
+
+
+fn main() {
+    let x = define_x();
+    println!("{}, world", x); 
+}
+
+fn define_x() -> &'static str {
+    let x = "hello";
+    x
+}
+
+
+
+fn main() {
+    let mut x: i32 = 1;
+    x = 7;
+    // Shadowing and re-binding
+    let x = x; 
+    // x += 3; // Помилка через неможливість змінювати значення після shadowing
+
+    let y = 4;
+    // Shadowing
+    let y = "I can also be bound to text!"; 
+
+    println!("Success!");
+}
+fn main() {
+    let (mut x, y) = (1, 2); // `mut` дозволяє змінювати значення `x`
+    x += 2;
+
+    assert_eq!(x, 3);
+    assert_eq!(y, 2);
+
+    println!("Success!");
+}
+fn main() {
+    let (x, y);
+    (x, ..) = (3, 4);
+    [.., y] = [1, 2];
+    // Заповнюємо пропуски для `assert_eq!`
+    assert_eq!([x, y], [3, 2]);
+
+    println!("Success!");
+}
