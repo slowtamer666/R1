@@ -1,0 +1,71 @@
+// Приклад 1: Виправлення помилок
+fn main() {
+    let arr = [1, 2, 3];
+    let s1: &[i32] = &arr[0..2];  // Використовуємо посилання на зріз
+
+    let s2: &str = "hello, world";  // Використовуємо &str замість str
+
+    println!("Success!");
+}
+
+// Приклад 2: Заміна значення в assert для правильного розміру
+fn main() {
+    let arr: [char; 3] = ['中', '国', '人'];
+
+    let slice = &arr[..2];
+    
+    // Виправляємо значення в assert, оскільки кожен символ займає 4 байти
+    assert!(std::mem::size_of_val(&slice) == 8);
+
+    println!("Success!");
+}
+
+// Приклад 3: Заповнення порожніх місць
+fn main() {
+    let arr: [i32; 5] = [1, 2, 3, 4, 5];
+    // Заповнення порожніх місць для створення правильного зрізу
+    let slice: &[i32] = &arr[1..4];  // Відбираємо елементи з індексів від 1 до 4
+    assert_eq!(slice, &[2, 3, 4]);
+
+    println!("Success!");
+}
+
+// Приклад 4: Заповнення порожнього місця
+fn main() {
+    let s = String::from("hello");
+
+    let slice1 = &s[0..2];
+    // Заповнюємо порожнє місце, щоб slice2 був такий самий як slice1
+    let slice2 = &s[0..2];
+
+    assert_eq!(slice1, slice2);
+
+    println!("Success!");
+}
+
+// Приклад 5: Виправлення індексів для зрізу
+fn main() {
+    let s = "你好，世界";
+    // Заміна індексів для коректного зрізу
+    let slice = &s[0..3];  // Оскільки кожен символ у Юнікоді займає більше одного байта
+
+    assert!(slice == "你");
+
+    println!("Success!");
+}
+
+// Приклад 6: Виправлення помилки з типом
+fn main() {
+    let mut s = String::from("hello world");
+
+    // Оскільки `&String` можна автоматично перетворити на `&str` (це називається Deref coercion)
+    let letter = first_letter(&s);
+
+    s.clear(); // Очищення змінної s
+
+    println!("the first letter is: {}", letter);
+}
+
+fn first_letter(s: &str) -> &str {
+    &s[..1]
+}
