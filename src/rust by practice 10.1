@@ -1,0 +1,125 @@
+// Завдання 1
+struct A;          // Конкретний тип `A`.
+struct S(A);       // Конкретний тип `S`.
+struct SGen<T>(T); // Узагальнений тип `SGen`.
+
+fn reg_fn(_s: S) {}
+
+fn gen_spec_t(_s: SGen<A>) {}
+
+fn gen_spec_i32(_s: SGen<i32>) {}
+
+fn generic<T>(_s: SGen<T>) {}
+
+fn main() {
+    // Використання функцій без узагальнення
+    reg_fn(S(A));          // Конкретний тип.
+    gen_spec_t(SGen(A));   // Неявно зазначений параметр типу `A`.
+    gen_spec_i32(SGen(5)); // Неявно зазначений параметр типу `i32`.
+
+    // Явно зазначений параметр типу `char` для `generic()`.
+    generic::<char>(SGen('a'));
+
+    // Неявно зазначений параметр типу `char` для `generic()`.
+    generic(SGen('b'));
+
+    println!("Success!");
+}
+// Завдання 2
+// Реалізація узагальненої функції `sum`
+fn sum<T: std::ops::Add<Output = T>>(a: T, b: T) -> T {
+    a + b
+}
+
+fn main() {
+    assert_eq!(5, sum(2i8, 3i8));
+    assert_eq!(50, sum(20, 30));
+    assert_eq!(2.46, sum(1.23, 1.23));
+
+    println!("Success!");
+}
+// Завдання 3
+// Реалізація структури Point для коректної роботи коду.
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+fn main() {
+    let integer = Point { x: 5, y: 10 };
+    let float = Point { x: 1.0, y: 4.0 };
+
+    println!("Success
+// Завдання 4
+// Зміна структури Point для коректної роботи коду
+struct Point<T, U> {
+    x: T,
+    y: U,
+}
+
+fn main() {
+    // НЕ змінювати цей код
+    let p = Point { x: 5, y: "hello".to_string() };
+
+    println!("Success!");
+}
+// Завдання 5
+// Додання узагальнення для Val для коректної роботи коду
+struct Val<T> {
+    val: T,
+}
+
+impl<T> Val<T> {
+    fn value(&self) -> &T {
+        &self.val
+    }
+}
+
+fn main() {
+    let x = Val { val: 3.0 };
+    let y = Val { val: "hello".to_string() };
+    println!("{}, {}", x.value(), y.value());
+}
+// Завдання 6
+struct Point<T, U> {
+    x: T,
+    y: U,
+}
+
+impl<T, U> Point<T, U> {
+    // Реалізація `mixup`
+    fn mixup<V, W>(self, other: Point<V, W>) -> Point<T, W> {
+        Point {
+            x: self.x,
+            y: other.y,
+        }
+    }
+}
+
+fn main() {
+    let p1 = Point { x: 5, y: 10 };
+    let p2 = Point { x: "Hello", y: '中' };
+
+    let p3 = p1.mixup(p2);
+
+    assert_eq!(p3.x, 5);
+    assert_eq!(p3.y, '中');
+
+    println!("Success!");
+}
+// Завдання 7
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+impl Point<f32> {
+    fn distance_from_origin(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
+}
+
+fn main() {
+    let p = Point { x: 5.0, y: 10.0 };
+    println!("{}", p.distance_from_origin());
+}
