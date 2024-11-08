@@ -1,0 +1,52 @@
+fn main() {
+    todo!();
+    unimplemented!();
+
+    assert_eq!(6, 5 + 3 + 2 + 1)
+}
+/// Adds 1 to the number.
+pub fn add_one(x: i32) -> i32 {
+    x + 1
+}
+
+/// Adds 2 to the number.
+pub fn add_two(x: i32) -> i32 {
+    x + 2
+}
+/// # Panics
+/// The function panics if the second argument is zero.
+/// ```rust,should_panic
+/// // panics on division by zero
+/// doc_comments::compute::div(10, 0);
+/// ```
+pub fn div(a: i32, b: i32) -> i32 {
+    if b == 0 {
+        panic!("Divide-by-zero error");
+    }
+    a / b
+}
+fn main() {
+    // This will panic:
+    // div(10, 0);
+
+    // This returns an error result instead of panicking:
+    match try_div(10, 0) {
+        Ok(result) => println!("Result: {}", result),
+        Err(e) => println!("Error: {}", e),
+    }
+}
+// In main.rs or wherever the div/try_div functions are used:
+
+fn main() {
+    // Uncomment to test panicking div function:
+    // div(10, 0); // This will panic
+
+    // Testing the try_div function that returns Result
+    match try_div(10, 0) {
+        Ok(result) => println!("Result: {}", result),
+        Err(e) => println!("Error: {}", e),
+    }
+
+    // Simple assertion test
+    assert_eq!(6, 5 + 3 + 2 + 1); // This will pass
+}
