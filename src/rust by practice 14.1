@@ -1,0 +1,38 @@
+.
+├── Cargo.toml
+├── Cargo.lock
+├── src
+│   ├── main1.rs
+│   ├── main2.rs
+│   └── hello-package.rs
+│       └── lib.rs
+├── tests              # Directory for integration test files
+│   └── some_integration_tests.rs
+├── benches            # Directory for benchmark files
+│   └── simple_bench.rs
+└── examples           # Directory for example files
+    └── simple_example.rs
+[package]
+name = "hello-package1"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[[bin]]
+name = "main1"
+path = "src/main1.rs"
+
+[[bin]]
+name = "main2"
+path = "src/main2.rs"
+
+[[bin]]
+name = "hello-package"
+path = "src/hello-package.rs"
+
+[lib]
+name = "hello-package"
+path = "src/lib.rs"
+
+[dev-dependencies]
