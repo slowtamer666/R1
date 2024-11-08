@@ -1,0 +1,175 @@
+// 1. Виправлення умовного блоку
+fn main() {
+    let n = 5;
+
+    if n < 0 {
+        println!("{} is negative", n);
+    } else if n > 0 {
+        println!("{} is positive", n);
+    } else {
+        println!("{} is zero", n);
+    }
+}
+// 2. Виправлення змінної `big_n` з умовою
+fn main() {
+    let n = 5;
+
+    let big_n = if n < 10 && n > -10 {
+        println!(", and is a small number, increase ten-fold");
+
+        10 * n
+    } else {
+        println!(", and is a big number, halve the number");
+
+        n / 2 // Видаляємо дробову частину, адже n є цілим числом
+    };
+
+    println!("{} -> {}", n, big_n);
+}
+// 3. Виправлення діапазону у циклі для запобігання паніки
+fn main() {
+    for n in 1..100 { // змінено на 1..100, щоб не викликати паніку
+        if n == 100 {
+            panic!("NEVER LET THIS RUN");
+        }
+    }
+
+    println!("Success!");
+}
+// 4. Виправлення циклу з копіюванням та повторним використанням масиву
+fn main() {
+    let names = [String::from("liming"), String::from("hanmeimei")];
+    for name in &names {
+        // Використовуємо посилання на `name` замість переміщення
+    }
+
+    println!("{:?}", names);
+
+    let numbers = [1, 2, 3];
+    for n in numbers {
+        // Виконуємо дії з `n`, який є типу Copy
+    }
+
+    println!("{:?}", numbers);
+}
+// 5. Ітерація з індексами та значеннями
+fn main() {
+    let a = [4, 3, 2, 1];
+
+    for (i, v) in a.iter().enumerate() {
+        println!("The {}th element is {}", i + 1, v);
+    }
+}
+// 6. Заповнення циклу while з FizzBuzz логікою
+fn main() {
+    let mut n = 1;
+
+    while n <= 10 {
+        if n % 15 == 0 {
+            println!("fizzbuzz");
+        } else if n % 3 == 0 {
+            println!("fizz");
+        } else if n % 5 == 0 {
+            println!("buzz");
+        } else {
+            println!("{}", n);
+        }
+
+       
+// 7. Виправлення циклу для виходу при досягненні 66
+fn main() {
+    let mut n = 0;
+    for i in 0..=100 {
+       if n == 66 {
+           break;
+       }
+       n += 1;
+    }
+
+    assert_eq!(n, 
+// 8. Заповнення блоку з перевіркою n != 66
+fn main() {
+    let mut n = 0;
+    for i in 0..=100 {
+       if n != 66 {
+           n += 1;
+           continue;
+       }
+       
+       break;
+    }
+
+    assert_eq!(n, 66);
+
+    println!("Success!");
+}
+// 9. Заповнення нескінченного циклу з пропусками та завершенням
+fn main() {
+    let mut count = 0u32;
+
+    println!("Let's count until infinity!");
+
+    loop {
+        count += 1;
+
+        if count == 3 {
+            println!("three");
+
+            continue; // Пропускаємо решту ітерації
+        }
+
+        println!("{}", count);
+
+        if count == 5 {
+            println!("OK, that's enough");
+
+            break; // Завершення циклу
+        }
+    }
+
+    assert_eq!(count, 5);
+
+    println!("Success!");
+}
+// 10. Використання значення з результатом циклу
+fn main() {
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+
+    assert_eq!(result, 20);
+
+    println!("Success!");
+}
+// 11. Лейбли та багаторівневі цикли
+fn main() {
+    let mut count = 0;
+    'outer: loop {
+        'inner1: loop {
+            if count >= 20 {
+                break 'inner1; // `break` також працює
+            }
+            count += 2;
+        }
+
+        count += 5;
+
+        'inner2: loop {
+            if count >= 30 {
+                break 'outer; // Завершення зовнішнього циклу
+            }
+
+            continue 'outer; // Переходить до початку зовнішнього циклу
+        }
+    }
+
+    assert!(count == 30);
+
+    println!("Success!");
+}
