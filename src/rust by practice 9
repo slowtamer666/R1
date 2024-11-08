@@ -1,0 +1,134 @@
+// Завдання 1
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    // Заповнення методу `area`, який повертає площу прямокутника
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle { width: 30, height: 50 };
+
+    assert_eq!(rect1.area(), 1500);
+
+    println!("Success!");
+}
+// Завдання 2
+#[derive(Debug)]
+struct TrafficLight {
+    color: String,
+}
+
+impl TrafficLight {
+    pub fn show_state(&self) {
+        println!("the current state is {}", self.color);
+    }
+}
+
+fn main() {
+    let light = TrafficLight {
+        color: "red".to_owned(),
+    };
+    // Не використовуємо ownership для `light` тут.
+    light.show_state();
+    // Інакше виникне помилка
+    println!("{:?}", light);
+}
+// Завдання 3
+struct TrafficLight {
+    color: String,
+}
+
+impl TrafficLight {
+    // Заповнення з використанням `Self`
+    pub fn show_state(&self) {
+        println!("the current state is {}", self.color);
+    }
+
+    // Заповнення без використання `Self` чи його варіантів
+    pub fn change_state(&mut self) {
+        self.color = "green".to_string();
+    }
+}
+
+fn main() {
+    println!("Success!");
+}
+// Завдання 4
+#[derive(Debug)]
+struct TrafficLight {
+    color: String,
+}
+
+impl TrafficLight {
+    // Додання асоційованої функції `new`, яка повертає TrafficLight з кольором "red"
+    pub fn new() -> Self {
+        Self {
+            color: "red".to_string(),
+        }
+    }
+
+    pub fn get_state(&self) -> &str {
+        &self.color
+    }
+}
+
+fn main() {
+    let light = TrafficLight::new();
+    assert_eq!(light.get_state(), "red");
+
+    println!("Success!");
+}
+// Завдання 5
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+// Використання кількох блоків `impl`
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+}
+
+impl Rectangle {
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+}
+
+fn main() {
+    println!("Success!");
+}
+// Завдання 6
+#[derive(Debug)]
+enum TrafficLightColor {
+    Red,
+    Yellow,
+    Green,
+}
+
+// Реалізація TrafficLightColor з методом `color`
+impl TrafficLightColor {
+    fn color(&self) -> &str {
+        match self {
+            TrafficLightColor::Red => "red",
+            TrafficLightColor::Yellow => "yellow",
+            TrafficLightColor::Green => "green",
+        }
+    }
+}
+
+fn main() {
+    let c = TrafficLightColor::Yellow;
+
+    assert_eq!(c.color(), "yellow");
+
+    println!("{:?}", c);
+}
