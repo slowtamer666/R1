@@ -1,0 +1,182 @@
+fn main() {
+    let color = String::from("green");
+
+    let print = move || println!("`color`: {}", color);
+
+    print();
+    print();
+
+    // `color` can be borrowed immutably again, because the closure only holds
+    // an immutable reference to `color`. 
+    let _reborrow = &color;
+
+    println!("{}",color);
+}
+fn main() {
+    let color = String::from("green");
+
+    let print = move || println!("`color`: {}", color);
+
+    print();
+    print();
+
+    // `color` can be borrowed immutably again, because the closure only holds
+    // an immutable reference to `color`. 
+    let _reborrow = &color;
+
+    println!("{}",color);
+}
+fn main() {
+    let mut count = 0;
+
+    let mut inc = || {
+        count += 1;
+        println!("`count`: {}", count);
+    };
+
+    inc();
+
+    // Removing the `reborrow` does not work since the closure requires a mutable reference.
+    let _reborrow = &count;  // Remove this line for code to work.
+
+    inc();
+
+    // The closure no longer needs to borrow `&mut count`. Therefore, it is
+    // possible to reborrow without an error
+    let _count_reborrowed = &mut count; 
+
+    assert_eq!(count, 0);
+}
+fn main() {
+     let movable = Box::new(3);
+
+     let consume = || {
+         println!("`movable`: {:?}", movable);
+         take(movable);
+     };
+
+     consume();
+     consume();
+}
+
+fn take<T>(_v: T) {}
+fn main() {
+    let example_closure = |x| x;
+
+    let s = example_closure(String::from("hello"));
+
+    /* Make it work, only change the following line */
+    let n = example_closure(5);
+}
+let example_closure = |x: String| x;
+let s = example_closure(String::from("hello"));
+
+let example_closure_i32 = |x: i32| x;
+let n = example_closure_i32(5);
+fn fn_once<F>(func: F)
+where
+    F: FnOnce(usize) -> bool,
+{
+    println!("{}", func(3));
+    println!("{}", func(4));
+}
+
+fn main() {
+    let x = vec![1, 2, 3];
+    fn_once(|z| z == x.len())
+}
+fn exec<'a, F: __>(mut f: F)  {
+    f("hello")
+}
+fn apply<F>(f: F) where
+    // The closure takes no input and returns nothing.
+    F: Fn() {
+
+    f();
+}
+
+// A function which takes a closure and returns an `i32`.
+fn apply_to_3<F>(f: F) -> i32 where
+    // The closure takes an `i32` and returns an `i32`.
+    F: Fn(i32) -> i32 {
+
+    f(3)
+}
+
+fn main() {
+    use std::mem;
+
+    let greeting = "hello";
+    let mut farewell = "goodbye".to_owned();
+
+    let diary = || {
+        println!("I said {}.", greeting);
+
+        farewell.push_str("!!!");
+        println!("Then I screamed {}.", farewell);
+        println!("Now I can sleep. zzzzz");
+
+        mem::drop(farewell);
+    };
+
+    apply(diary);
+
+    let double = |x| 2 * x;
+
+    println!("3 doubled: {}", apply_to_3(double));
+}
+fn apply<F>(f: F) where
+    // The closure takes no input and returns nothing.
+    F: Fn() {
+
+    f();
+}
+
+// A function which takes a closure and returns an `i32`.
+fn apply_to_3<F>(f: F) -> i32 where
+    // The closure takes an `i32` and returns an `i32`.
+    F: Fn(i32) -> i32 {
+
+    f(3)
+}
+
+fn main() {
+    use std::mem;
+
+    let greeting = "hello";
+    let mut farewell = "goodbye".to_owned();
+
+    let diary = || {
+        println!("I said {}.", greeting);
+
+        farewell.push_str("!!!");
+        println!("Then I screamed {}.", farewell);
+        println!("Now I can sleep. zzzzz");
+
+        mem::drop(farewell);
+    };
+
+    apply(diary);
+
+    let double = |x| 2 * x;
+
+    println!("3 doubled: {}", apply_to_3(double));
+}
+fn factory(x:i32) -> __ {
+    let num = 5;
+
+    if x > 1{
+        move |x| x + num
+    } else {
+        move |x| x + num
+    }
+}
+fn factory(x:i32) -> Box<dyn Fn(i32) -> i32> {
+    let num = 5;
+
+    if x > 1 {
+        Box::new(move |x| x + num)
+    } else {
+        Box::new(move |x| x + num)
+    }
+}
