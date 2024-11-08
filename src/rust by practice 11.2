@@ -1,0 +1,104 @@
+fn main() {
+    let arr: [u8; 3] = [1, 2, 3];
+    
+    let v = Vec::from(arr); // Use Vec::from to convert array to Vec
+    is_vec(&v);
+
+    let v = vec![1, 2, 3]; // Another way to create a vector using the vec! macro
+    is_vec(&v);
+
+    // vec!(..) and vec![..] are same macros, so
+    let v = vec!(1, 2, 3); // vec!(..) is also valid for creating a vector
+    is_vec(&v);
+    
+    // In code below, v is Vec<[u8; 3]> , not Vec<u8>
+    let v1 = vec![arr]; // `vec!` macro creates Vec<[u8; 3]> here, wrapping the array
+    is_vec(&v1);
+ 
+    assert_eq!(v, v1);
+
+    println!("Success!");
+}
+
+fn is_vec(v: &Vec<u8>) {
+    // Implementation to check if it's a Vec<u8> or print the conte
+fn main() {
+    let mut v1 = Vec::from([1, 2, 4]);
+    v1.pop(); // Removes 4
+    v1.push(3); // Adds 3
+    
+    let mut v2 = Vec::new();
+    // FILL the blank: we can append the elements of v1 to v2 using extend
+    v2.extend(v1.iter());
+
+    assert_eq!(v1, v2); // Ensure both vectors are the same
+
+    println!("Success!");
+}
+fn main() {
+    // Array -> Vec
+    // impl From<[T; N]> for Vec
+    let arr = [1, 2, 3];
+    let v1 = Vec::from(arr); // Directly convert an array to Vec using `Vec::from`
+    let v2: Vec<i32> = arr.to_vec(); // Use `to_vec()` method to convert array to Vec
+    
+    assert_eq!(v1, v2);
+
+    // String -> Vec
+    // impl From<String> for Vec
+    let s = "hello".to_string();
+    let v1: Vec<u8> = s.into_bytes(); // Convert string to Vec<u8>
+
+    let s = "hello".to_string();
+    let v2 = s.into_bytes(); // Same conversion using `into_bytes`
+    assert_eq!(v1, v2);
+
+    // impl<'_> From<&'_ str> for Vec
+    let s = "hello";
+    let v3 = s.as_bytes().to_vec(); // Convert string slice to Vec<u8>
+    assert_eq!(v2, v3);
+
+    // Iterators can be collected into vectors
+    let v4: Vec<i32> = [0; 10].into_iter().collect(); // Convert iterator to vector
+    assert_eq!(v4, vec![0; 10]);
+
+    println!("Success!");
+}
+fn main() {
+    let mut v = Vec::from([1, 2, 3]);
+    
+    for i in 0..5 {
+        println!("{:?}", v.get(i)); // Use `get()` to safely index into the vector
+    }
+
+    for i in 0..5 {
+        // Mutate each element by adding 1
+        if let Some(value) = v.get_mut(i) { // Use `get_mut()` for mutable access
+            *value += 1;
+        }
+    }
+    
+    assert_eq!(v, vec![2, 3, 4, 5, 6]);
+
+    println!("Success!");
+}
+fn main() {
+    let mut v = vec![1, 2, 3];
+
+    let slice1 = &v[..]; // Slice the entire vector
+    // Out of bounds will cause a panic
+    // You must use `v.len` here to ensure valid range
+    let slice2 = &v[0..v.len()]; // Correct the out-of-bounds index to use the vector length
+    
+    assert_eq!(slice1, slice2);
+    
+    // Slices are read-only but you can mutate elements in the vector itself
+    let vec_ref: &mut Vec<i32> = &mut v;
+    vec_ref.push(4); // Add an element to the vector
+    let slice3 = &mut v[0..3]; // Take a mutable slice of the first three elements
+    slice3.push(4); // Modify the slice
+
+    assert_eq!(slice3, &[1, 2, 3, 4]); // Check the modified slice
+
+    println!("Success!");
+}
