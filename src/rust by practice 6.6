@@ -1,0 +1,129 @@
+// Enum з числовими значеннями та перевірка рівності
+enum Number {
+    Zero = 0,
+    One = 1,
+    Two = 2,
+}
+
+enum Number1 {
+    Zero = 0,
+    One,
+    Two,
+}
+
+fn main() {
+    assert_eq!(Number::One as u8, Number1::One as u8); // Перетворення для порівняння
+    println!("Success!");
+}
+// Виправлення для Message та його варіантів
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+}
+
+fn main() {
+    let msg1 = Message::Move { x: 1, y: 2 };
+    let msg2 = Message::Write(String::from("hello, world!"));
+
+    println!("Success!");
+}
+// Масив із Message та реалізація Display для Message для виведення
+use std::fmt;
+
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+}
+
+// Реалізація Display для Message
+impl fmt::Display for Message {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Message::Quit => write!(f, "Quit"),
+            Message::Move { x, y } => write!(f, "Move to ({}, {})", x, y),
+            Message::Write(msg) => write!(f, "Write: {}", msg),
+            Message::ChangeColor(r, g, b) => write!(f, "Change color to ({}, {}, {})", r, g, b),
+        }
+    }
+}
+
+fn main() {
+    let msgs: [Message; 3] = [
+        Message::Quit,
+        Message::Move { x: 1, y: 3 },
+        Message::ChangeColor(255, 255, 0),
+    ];
+
+    for msg in &msgs {
+        show_message(msg);
+    }
+}
+
+fn show_message(msg: &Message) {
+    println!("{}", msg);
+}
+// Використання Option із функцією plus_one та обробка з if let
+fn main() {
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+
+    if let Some(n) = six {
+        println!("{}", n);
+        println!("Success!");
+    } else {
+        panic!("NEVER LET THIS RUN!");
+    }
+}
+
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        Some(i) => Some(i + 1),
+        None => None,
+    }
+}
+// Реалізація зв'язаного списку з використанням Enum List
+use crate::List::*;
+
+enum List {
+    Cons(u32, Box<List>),
+    Nil,
+}
+
+impl List {
+    fn new() -> List {
+        Nil
+    }
+
+    fn prepend(self, elem: u32) -> List {
+        Cons(elem, Box::new(self))
+    }
+
+    fn len(&self) -> u32 {
+        match self {
+            Cons(_, ref tail) => 1 + tail.len(),
+            Nil => 0,
+        }
+    }
+
+    fn stringify(&self) -> String {
+        match self {
+            Cons(head, ref tail) => format!("{}, {}", head, tail.stringify()),
+            Nil => format!("Nil"),
+        }
+    }
+}
+
+fn main() {
+    let mut list = List::new();
+    list = list.prepend(1);
+    list = list.prepend(2);
+    list = list.prepend(3);
+
+    println!("linked list has length: {}", list.len());
+    println!("{}", list.stringify());
+}
