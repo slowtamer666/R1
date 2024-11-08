@@ -1,0 +1,161 @@
+fn main() {
+    let arr = [0; 10];
+    for &i in arr.iter() {
+        println!("{}", i);
+    }
+}
+fn main() {
+    let mut v = Vec::new();
+    for n in 0..100 {
+        v.push(n);
+    }
+
+    assert_eq!(v.len(), 100);
+}
+fn main() {
+    let mut v1 = vec![1, 2];
+
+    assert_eq!(v1.pop(), Some(2));  // .pop() is the correct method
+    assert_eq!(v1.pop(), Some(1));  
+    assert_eq!(v1.pop(), None);  // After popping all elements, it returns None
+}
+fn main() {
+    let arr = vec![0; 10];
+    for i in arr {
+        println!("{}", i);
+    }
+
+    // This line would now fail because ownership of arr has been moved
+    // println!("{:?}", arr);  // ERROR: `arr` is no longer available after moving
+}
+fn main() {
+    let mut names = vec!["Bob", "Frank", "Ferris"];
+
+    for name in names.iter_mut() {  // Use .iter_mut() to get mutable references
+        *name = match *name {
+            "Ferris" => "There is a rustacean among us!",
+            _ => "Hello",
+        };
+    }
+
+    println!("names: {:?}", names);
+}
+fn main() {
+    let mut values = vec![1, 2, 3];
+    let mut values_iter = values.iter_mut();  // .iter_mut() allows mutation
+
+    if let Some(v) = values_iter.next() {  // .next() returns an Option
+        *v = 0;  // Set the first value to 0
+    }
+
+    assert_eq!(values, vec![0, 2, 3]);
+}
+struct Fibonacci {
+    curr: u32,
+    next: u32,
+}
+
+impl Iterator for Fibonacci {
+    type Item = u32;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let curr = self.curr;
+        self.curr = self.next;
+        self.next = self.next + curr;
+        Some(curr)
+    }
+}
+
+fn fibonacci() -> Fibonacci {
+    Fibonacci { curr: 0, next: 1 }
+}
+
+fn main() {
+    let mut fib = fibonacci();
+    assert_eq!(fib.next(), Some(0));  // First number in Fibonacci sequence is 0
+    assert_eq!(fib.next(), Some(1));  // Next number is 1
+    assert_eq!(fib.next(), Some(1));  // 1 again
+    assert_eq!(fib.next(), Some(2));  // Then 2
+    assert_eq!(fib.next(), Some(3));  // Then 3
+}
+fn main() {
+    let v1 = vec![1, 2, 3];
+
+    let total: i32 = v1.iter().sum();  // Sum using iter()
+
+    assert_eq!(total, 6);
+
+    println!("{:?}", v1);
+}
+use std::collections::HashMap;
+
+fn main() {
+    let names = [("sunface", 18), ("sunfei", 18)];
+    let folks: HashMap<_, _> = names.into_iter().collect();
+
+    println!("{:?}", folks);
+
+    let v1: Vec<i32> = vec![1, 2, 3];
+
+    let v2: Vec<_> = v1.iter().collect();
+
+    assert_eq!(v2, vec![1, 2, 3]);
+}
+fn main() {
+    let v1: Vec<i32> = vec![1, 2, 3];
+
+    let v2: Vec<_> = v1.iter().map(|x| x + 1).collect();  // Use map() to modify elements
+
+    assert_eq!(v2, vec![2, 3, 4]);
+}
+use std::collections::HashMap;
+
+fn main() {
+    let names = ["sunface", "sunfei"];
+    let ages = [18, 18];
+    let folks: HashMap<_, _> = names.iter().zip(ages.iter()).collect();  // Use .zip() to combine iterators
+
+    println!("{:?}", folks);
+}
+#[derive(PartialEq, Debug)]
+struct Shoe {
+    size: u32,
+    style: String,
+}
+
+fn shoes_in_size(shoes: Vec<Shoe>, shoe_size: u32) -> Vec<Shoe> {
+    shoes.into_iter().filter(|s| s.size == shoe_size).collect()  // Use filter to select the right size
+}
+
+fn main() {
+    let shoes = vec![
+        Shoe {
+            size: 10,
+            style: String::from("sneaker"),
+        },
+        Shoe {
+            size: 13,
+            style: String::from("sandal"),
+        },
+        Shoe {
+            size: 10,
+            style: String::from("boot"),
+        },
+    ];
+
+    let in_my_size = shoes_in_size(shoes, 10);
+
+    assert_eq!(
+        in_my_size,
+        vec![
+            Shoe {
+                size: 10,
+                style: String::from("sneaker")
+            },
+            Shoe {
+                size: 10,
+                style: String::from("boot")
+            },
+        ]
+    );
+}
