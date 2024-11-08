@@ -1,0 +1,118 @@
+fn main() {
+    let v = "hello";  // Fill the blank with `let v = "hello";`
+    need_static(v);    // This uses the static string `"hello"`
+
+    println!("Success!")
+}
+
+fn need_static(r : &'static str) {
+    assert_eq!(r, "hello");
+}
+#[derive(Debug)]
+struct Config {
+    a: String,
+    b: String,
+}
+
+static mut config: Option<&mut Config> = None;
+
+fn init() -> Option<&'static mut Config> {
+    Some(&mut Config {
+        a: "A".to_string(),
+        b: "B".to_string(),
+    })
+}
+
+fn main() {
+    unsafe {
+        config = init();  // Fill this with the appropriate unsafe block and init function call
+
+        println!("{:?}", config)
+    }
+}
+fn main() {
+    {
+        // Make a `string` literal and print it:
+        let static_string = "I'm in read-only memory";
+        println!("static_string: {}", static_string);
+
+        // When `static_string` goes out of scope, the reference
+        // can no longer be used, but the data remains in the binary.
+    }
+
+    // Error: static_string cannot be accessed outside its scope.
+    // println!("static_string reference remains alive: {}", static_string); // This would fail!
+}
+use std::fmt::Debug;
+
+fn print_it<T: Debug + 'static>(input: T) {
+    println!("'static value passed in is: {:?}", input);
+}
+
+fn print_it1(input: impl Debug + 'static) {
+    println!("'static value passed in is: {:?}", input);
+}
+
+fn print_it2<T: Debug + 'static>(input: &T) {
+    println!("'static value passed in is: {:?}", input);
+}
+
+fn main() {
+    // i is owned and contains no references, thus it's 'static:
+    let i = 5;
+    print_it(i);
+
+    // oops, &i only has the lifetime defined by the scope of
+    // main(), so it's not 'static:
+    // print_it(&i); // This will not work, because &i is not 'static
+
+    print_it1(&i);
+
+    // This one works:
+    print_it2(&i);
+}
+use std::fmt::Display;
+
+fn main() {
+    let mut string = "First".to_owned();
+
+    string.push_str(string.to_uppercase().as_str());
+    print_a(&string);
+    print_b(&string);
+    print_c(&string); // Compilation error: string is not 'static
+    print_d(&string); // Compilation error: string is not 'static
+    print_e(&string);
+    print_f(&string);
+    print_g(&string); // Compilation error: string is not 'static
+}
+
+fn print_a<T: Display + 'static>(t: &T) {
+    println!("{}", t);
+}
+
+fn print_b<T>(t: &T)
+where
+    T: Display + 'static,
+{
+    println!("{}", t);
+}
+
+fn print_c(t: &'static dyn Display) {
+    println!("{}", t)
+}
+
+fn print_d(t: &'static impl Display) {
+    println!("{}", t)
+}
+
+fn print_e(t: &(dyn Display + 'static)) {
+    println!("{}", t)
+}
+
+fn print_f(t: &(impl Display + 'static)) {
+    println!("{}", t)
+}
+
+fn print_g(t: &'static String) {
+    println!("{}", t);
+}
