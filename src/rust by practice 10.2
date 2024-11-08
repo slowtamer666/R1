@@ -1,0 +1,53 @@
+// Завдання 1
+struct Array<T, const N: usize> {
+    data: [T; N],
+}
+
+fn main() {
+    let arrays = [
+        Array { data: [1, 2, 3] },
+        Array { data: [1.0, 2.0, 3.0] },
+        Array { data: [1, 2] },
+    ];
+
+    println!("Success!");
+}
+// Завдання 2
+fn print_array<T, const N: usize>(arr: [T; N]) {
+    println!("{:?}", arr);
+}
+
+fn main() {
+    let arr = [1, 2, 3];
+    print_array(arr);
+
+    let arr = ["hello", "world"];
+    print_array(arr);
+}
+// Завдання 3
+#![allow(incomplete_features)]
+#![feature(generic_const_exprs)]
+
+fn check_size<T>(val: T)
+where
+    Assert<{ core::mem::size_of::<T>() < 768 }>: IsTrue,
+{
+    //...
+}
+
+// Виправлення помилок у `main`.
+fn main() {
+    check_size([0u8; 767]); 
+    check_size([0i32; 191]);
+    check_size(["hello你好"; 64]); // Розмір &str
+    check_size([(); 64].map(|_| "hello你好".to_string())); // Розмір String
+    check_size(['中'; 192]); // Розмір char
+
+    println!("Success!");
+}
+
+pub enum Assert<const CHECK: bool> {}
+
+pub trait IsTrue {}
+
+impl IsTrue for Assert<true> {}
