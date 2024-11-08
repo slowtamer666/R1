@@ -1,0 +1,94 @@
+// Annotate struct with lifetime:
+// 1. `r` and `s` must have different lifetimes
+// 2. lifetime of `s` is bigger than that of 'r'
+struct DoubleRef<'r, 's> {
+    r: &'r str,
+    s: &'s str,
+}
+
+fn main() {
+    println!("Success!");
+}
+struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+impl<'a, 'b> ImportantExcerpt<'a> {
+    // The function `announce_and_return_part` must return a reference to `announcement`, not `part`, 
+    // which is valid for the `'b` lifetime.
+    fn announce_and_return_part(&'a self, announcement: &'b str) -> &'b str {
+        println!("Attention please: {}", announcement);
+        self.part
+    }
+}
+
+fn main() {
+    println!("Success!");
+}
+// Adding HRTB to make it work!
+fn call_on_ref_zero<'a, F>(f: F) 
+where 
+    F: Fn(&'a i32) // Function must accept a reference to i32 with lifetime 'a
+{
+    let zero = 0;
+    f(&zero); // Call the function with a reference to zero
+}
+
+fn main() {
+    println!("Success!");
+}
+// Reorder the code to make it work
+fn main() {
+    let mut data = 10;
+    let ref1 = &mut data;  // First mutable reference to data
+    let ref2 = &mut *ref1; // Second mutable reference to data
+
+    *ref1 += 1; // Modify data through ref1
+    *ref2 += 2; // Modify data through ref2
+
+    println!("{}", data); // Print final value of data
+}
+struct Interface<'a> {
+    manager: &'a mut Manager<'a>,
+}
+
+impl<'a> Interface<'a> {
+    pub fn noop(self) {
+        println!("interface consumed");
+    }
+}
+
+struct Manager<'a> {
+    text: &'a str,
+}
+
+struct List<'a> {
+    manager: Manager<'a>,
+}
+
+impl<'a> List<'a> {
+    pub fn get_interface(&'a mut self) -> Interface<'a> {
+        Interface {
+            manager: &mut self.manager, // Get mutable reference to manager
+        }
+    }
+}
+
+fn main() {
+    let mut list = List {
+        manager: Manager {
+            text: "hello",
+        },
+    };
+
+    // Call get_interface, which returns a mutable reference
+    list.get_interface().noop();
+
+    println!("Interface should be dropped here and the borrow released");
+
+    use_list(&list); // Use list after the interface is consumed
+}
+
+fn use_list(list: &List) {
+    println!("{}", list.manager.text); // Access manager's text
+}
